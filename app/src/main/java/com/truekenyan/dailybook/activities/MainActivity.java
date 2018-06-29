@@ -12,6 +12,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.truekenyan.dailybook.R;
 import com.truekenyan.dailybook.adapters.HomeAdapter;
@@ -70,6 +72,20 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu (Menu menu) {
+        getMenuInflater().inflate(R.menu.mein_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected (MenuItem item) {
+        if (item.getItemId() == R.id.settings){
+            startActivity(new Intent(getApplicationContext(), ExtrasActivity.class));
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @OnClick (R.id.fab)

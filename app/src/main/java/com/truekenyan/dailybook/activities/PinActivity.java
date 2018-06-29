@@ -33,13 +33,13 @@ public class PinActivity extends AppCompatActivity {
 
         startActivity(new Intent(getApplicationContext(), MainActivity.class));
 
-//        SharedPreferences sharedPreferences = getSharedPreferences(Constants.PIN_COLUMN, MODE_PRIVATE);
-//        if (sharedPreferences.contains(Constants.PIN_COLUMN)){
-//            savedPin = sharedPreferences.getInt(Constants.PIN_COLUMN, 0);
-//        } else {
-//            startActivity(new Intent(getApplicationContext(), NewPinActivity.class));
-//            finish();
-//        }
+        SharedPreferences sharedPreferences = getSharedPreferences(Constants.PIN_COLUMN, MODE_PRIVATE);
+        if (sharedPreferences.contains(Constants.PIN_COLUMN)){
+            savedPin = sharedPreferences.getInt(Constants.PIN_COLUMN, 0);
+        } else {
+            startActivity(new Intent(getApplicationContext(), NewPinActivity.class));
+            finish();
+        }
     }
 
     @OnClick ({R.id.confirm_button, R.id.reset_button})
@@ -56,7 +56,7 @@ public class PinActivity extends AppCompatActivity {
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     finish();
                 } else {
-                    new MaterialDialog.Builder(getApplicationContext())
+                    new MaterialDialog.Builder(PinActivity.this)
                             .title("Error")
                             .content("Dou want to reset Pin?")
                             .positiveText("YES")

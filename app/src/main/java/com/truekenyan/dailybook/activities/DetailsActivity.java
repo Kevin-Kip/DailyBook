@@ -17,7 +17,6 @@ import com.truekenyan.dailybook.models.JournalEntry;
 import com.truekenyan.dailybook.utilities.AppExecutors;
 import com.truekenyan.dailybook.utilities.Constants;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;

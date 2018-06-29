@@ -1,20 +1,18 @@
-package com.truekenyan.dailybook.fragments;
+package com.truekenyan.dailybook.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.truekenyan.dailybook.R;
-import com.truekenyan.dailybook.activities.NewPinActivity;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
@@ -25,33 +23,30 @@ import butterknife.Unbinder;
  */
 
 @SuppressWarnings ({"WeakerAccess", "unused"})
-public class ExtrasFragment extends Fragment {
+public class ExtrasActivity extends AppCompatActivity {
     Unbinder unbinder;
-
-    private Context context;
-    @Nullable
-    @Override
-    public View onCreateView (@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_extras, container, false);
-        context = getContext();
-        unbinder = ButterKnife.bind(this, view);
-        return view;
-    }
+    @BindView (R.id.toolbar)
+    Toolbar toolbar;
 
     @Override
-    public void onDestroyView () {
-        super.onDestroyView();
-        unbinder.unbind();
+    protected void onCreate (@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_extras);
+        ButterKnife.bind(this);
+
+        setSupportActionBar(toolbar);
+        assert getSupportActionBar() != null;
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @OnClick ({R.id.change_pin, R.id.about_me, R.id.close_app})
     public void onViewClicked (View view) {
         switch (view.getId()) {
             case R.id.change_pin:
-                startActivity(new Intent(context, NewPinActivity.class));
+                startActivity(new Intent(getApplicationContext(), NewPinActivity.class));
                 break;
             case R.id.about_me:
-                new MaterialDialog.Builder(context)
+                new MaterialDialog.Builder(ExtrasActivity.this)
                         .title("About me")
                         .content(getResources().getString(R.string.long_text))
                         .neutralText("CLOSE")
@@ -64,8 +59,7 @@ public class ExtrasFragment extends Fragment {
                         .show();
                 break;
             case R.id.close_app:
-                assert getContext() != null;
-                new MaterialDialog.Builder(context)
+                new MaterialDialog.Builder(ExtrasActivity.this)
                         .title("Confirmation")
                         .content("Are you sure you want to exit?")
                         .positiveText("SURE")
@@ -75,7 +69,7 @@ public class ExtrasFragment extends Fragment {
                             public void onClick (@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 dialog.dismiss();
                                 System.exit(0);
-                                getActivity().finishAffinity();
+                                finishAffinity();
                             }
                         })
                         .onNegative(new MaterialDialog.SingleButtonCallback() {
