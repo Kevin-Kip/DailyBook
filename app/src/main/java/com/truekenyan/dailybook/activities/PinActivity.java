@@ -31,20 +31,27 @@ public class PinActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pin);
         ButterKnife.bind(this);
 
-        SharedPreferences sharedPreferences = getSharedPreferences(Constants.PIN_COLUMN, MODE_PRIVATE);
-        if (sharedPreferences.contains(Constants.PIN_COLUMN)){
-            savedPin = sharedPreferences.getInt(Constants.PIN_COLUMN, 0);
-        } else {
-            startActivity(new Intent(getApplicationContext(), NewPinActivity.class));
-            finish();
-        }
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+
+//        SharedPreferences sharedPreferences = getSharedPreferences(Constants.PIN_COLUMN, MODE_PRIVATE);
+//        if (sharedPreferences.contains(Constants.PIN_COLUMN)){
+//            savedPin = sharedPreferences.getInt(Constants.PIN_COLUMN, 0);
+//        } else {
+//            startActivity(new Intent(getApplicationContext(), NewPinActivity.class));
+//            finish();
+//        }
     }
 
     @OnClick ({R.id.confirm_button, R.id.reset_button})
     public void onViewClicked (View view) {
         switch (view.getId()) {
             case R.id.confirm_button:
-                int pin = Integer.parseInt(pinInput.getText().toString().trim());
+                String input = pinInput.getText().toString().trim();
+                if (input.length() < 4){
+                    pinInput.setError(getString(R.string.too_short_error));
+                    return;
+                }
+                int pin = Integer.parseInt(input);
                 if (pin == savedPin){
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     finish();

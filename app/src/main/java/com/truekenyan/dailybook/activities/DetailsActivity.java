@@ -13,11 +13,11 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.truekenyan.dailybook.R;
 import com.truekenyan.dailybook.database.DailyBookDatabase;
-import com.truekenyan.dailybook.fragments.HomeFragment;
 import com.truekenyan.dailybook.models.JournalEntry;
 import com.truekenyan.dailybook.utilities.AppExecutors;
 import com.truekenyan.dailybook.utilities.Constants;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -52,8 +52,7 @@ public class DetailsActivity extends AppCompatActivity {
         assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        List<JournalEntry> entryList;
-        entryList = HomeFragment.getList();
+        List<JournalEntry> entryList = MainActivity.getList();
 
         Intent intent = getIntent();
         position = Integer.parseInt(String.valueOf(intent.getIntExtra(Constants.POSITION, 0)));

@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import com.truekenyan.dailybook.R;
 import com.truekenyan.dailybook.database.DailyBookDatabase;
-import com.truekenyan.dailybook.fragments.HomeFragment;
 import com.truekenyan.dailybook.models.JournalEntry;
 import com.truekenyan.dailybook.utilities.AppExecutors;
 import com.truekenyan.dailybook.utilities.Constants;
@@ -60,7 +59,8 @@ public class WriteActivity extends AppCompatActivity {
         intent = getIntent();
         if (intent != null) {
             if (intent.hasExtra(Constants.POSITION)) {
-                JournalEntry journalEntry = HomeFragment.getList().get(intent.getIntExtra(Constants.POSITION, 0));
+                int position = Integer.parseInt(String.valueOf(intent.getIntExtra(Constants.POSITION, 0)));
+                JournalEntry journalEntry = MainActivity.getList().get(position);
                 dayText = journalEntry.getWriteDate();
                 dayText = journalEntry.getWriteDay();
                 monthText = journalEntry.getWriteMonth();

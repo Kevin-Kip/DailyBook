@@ -43,6 +43,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
             public void onClick (View view) {
                 Intent intent = new Intent(context, DetailsActivity.class);
                 intent.putExtra(Constants.POSITION, viewHolder.getAdapterPosition());
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
         });

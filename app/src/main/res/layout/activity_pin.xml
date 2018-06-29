@@ -22,6 +22,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/pin_parent"
         android:padding="10dp"
+        app:passwordToggleEnabled="true"
         app:layout_constraintTop_toBottomOf="@id/pic">
         <EditText
             android:layout_width="match_parent"
