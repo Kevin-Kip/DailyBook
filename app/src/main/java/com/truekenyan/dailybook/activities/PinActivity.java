@@ -31,8 +31,6 @@ public class PinActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pin);
         ButterKnife.bind(this);
 
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-
         SharedPreferences sharedPreferences = getSharedPreferences(Constants.PIN_COLUMN, MODE_PRIVATE);
         if (sharedPreferences.contains(Constants.PIN_COLUMN)){
             savedPin = sharedPreferences.getInt(Constants.PIN_COLUMN, 0);

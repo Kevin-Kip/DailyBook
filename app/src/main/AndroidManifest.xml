@@ -25,7 +25,8 @@
             android:name=".activities.DetailsActivity"
             android:parentActivityName=".activities.MainActivity" />
         <activity android:name=".activities.NewPinActivity" />
-        <activity android:name=".activities.ExtrasActivity" />
+        <activity android:name=".activities.ExtrasActivity"
+            android:parentActivityName=".activities.MainActivity"/>
     </application>
 
 </manifest>
