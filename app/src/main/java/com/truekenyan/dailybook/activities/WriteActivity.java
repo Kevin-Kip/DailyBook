@@ -7,11 +7,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.truekenyan.dailybook.R;
 import com.truekenyan.dailybook.database.DailyBookDatabase;
+import com.truekenyan.dailybook.fragments.HomeFragment;
 import com.truekenyan.dailybook.models.JournalEntry;
 import com.truekenyan.dailybook.utilities.AppExecutors;
+import com.truekenyan.dailybook.utilities.Constants;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -21,6 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+@SuppressWarnings ("WeakerAccess")
 public class WriteActivity extends AppCompatActivity {
 
     @BindView (R.id.toolbar)
@@ -41,7 +45,8 @@ public class WriteActivity extends AppCompatActivity {
     private String monthText;
     private String timeText;
     private String yearText;
-
+    private boolean isEdit = false;
+    private Intent intent;
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,11 +57,26 @@ public class WriteActivity extends AppCompatActivity {
 
         Calendar calendar = Calendar.getInstance();
 
-        dateText = new SimpleDateFormat("dd", Locale.getDefault()).format(calendar.getTime());
-        dayText = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
-        monthText = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
-        yearText = new SimpleDateFormat("yyyy", Locale.getDefault()).format(calendar.getTime());
-        timeText = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(calendar.getTime());
+        intent = getIntent();
+        if (intent != null) {
+            if (intent.hasExtra(Constants.POSITION)) {
+                JournalEntry journalEntry = HomeFragment.getList().get(intent.getIntExtra(Constants.POSITION, 0));
+                dayText = journalEntry.getWriteDate();
+                dayText = journalEntry.getWriteDay();
+                monthText = journalEntry.getWriteMonth();
+                yearText = journalEntry.getWriteYear();
+                timeText = journalEntry.getWriteTime();
+                contentInput.setText(journalEntry.getContent());
+                isEdit = true;
+            } else {
+                dateText = new SimpleDateFormat("dd", Locale.getDefault()).format(calendar.getTime());
+                dayText = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
+                monthText = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
+                yearText = new SimpleDateFormat("yyyy", Locale.getDefault()).format(calendar.getTime());
+                timeText = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(calendar.getTime());
+                isEdit = false;
+            }
+        }
 
         date.setText(dateText);
         day.setText(dayText);
@@ -70,13 +90,36 @@ public class WriteActivity extends AppCompatActivity {
             case R.id.save_entry:
                 String content = contentInput.getText().toString().trim();
                 JournalEntry journalEntry = new JournalEntry(content,dateText,yearText,monthText,dayText,timeText);
-                saveItem(journalEntry);
+                if (isEdit){
+                    updateItem(journalEntry);
+                    Toast.makeText(getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
+                    isEdit = false;
+                    finish();
+                } else {
+                    saveItem(journalEntry);
+                    Toast.makeText(getApplicationContext(), "Saved successfully", Toast.LENGTH_SHORT).show();
+                    isEdit = false;
+                    finish();
+                }
                 break;
             case R.id.icon_close:
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                isEdit = false;
                 finish();
                 break;
         }
+    }
+
+    private void updateItem (final JournalEntry journalEntry) {
+        AppExecutors.getExecutors().getDiskIO().execute(new Runnable() {
+            @Override
+            public void run () {
+                DailyBookDatabase
+                        .getDatabaseInstance(getApplicationContext())
+                        .journalDao()
+                        .updateEntry(journalEntry);
+            }
+        });
     }
 
     private void saveItem (final JournalEntry journalEntry) {
@@ -89,5 +132,18 @@ public class WriteActivity extends AppCompatActivity {
                         .saveEntry(journalEntry);
             }
         });
+    }
+
+    @Override
+    protected void onStop () {
+        super.onStop();
+        isEdit = false;
+        intent.removeExtra(Constants.POSITION);
+    }
+
+    @Override
+    protected void onDestroy () {
+        super.onDestroy();
+        intent.removeExtra(Constants.POSITION);
     }
 }

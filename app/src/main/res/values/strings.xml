@@ -4,4 +4,12 @@
     <string name="confirm">confirm</string>
     <string name="forgot_pin_reset_here">Forgot Pin? Reset Here</string>
     <string name="what_s_on_your_mind">What\'s on your mind?</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="back_to_sign_in">Back to Sign In</string>
+    <string name="save">SAVE</string>
+    <string name="long_text">This is an app for the #7DaysOfCodeChallenge but Andela for the Android Developer Course in the ALC3.0 Google Scholarship Program.</string>
+    <string name="change_pin">Change Pin</string>
+    <string name="exit">Exit</string>
+    <string name="about">About Me</string>
 </resources>

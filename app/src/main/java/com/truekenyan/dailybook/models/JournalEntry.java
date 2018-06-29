@@ -4,12 +4,14 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
+import com.truekenyan.dailybook.utilities.Constants;
+
 /**
  * Created by password
  * on 6/28/18.
  */
 
-@Entity
+@Entity(tableName = Constants.TABLE_NAME)
 public class JournalEntry {
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -48,55 +50,28 @@ public class JournalEntry {
         return id;
     }
 
-    public void setId (int id) {
-        this.id = id;
-    }
-
     public String getContent () {
         return content;
-    }
-
-    public void setContent (String content) {
-        this.content = content;
     }
 
     public String getWriteDate () {
         return writeDate;
     }
 
-    public void setWriteDate (String writeDate) {
-        this.writeDate = writeDate;
-    }
-
     public String getWriteYear () {
         return writeYear;
-    }
-
-    public void setWriteYear (String writeYear) {
-        this.writeYear = writeYear;
     }
 
     public String getWriteMonth () {
         return writeMonth;
     }
 
-    public void setWriteMonth (String writeMonth) {
-        this.writeMonth = writeMonth;
-    }
-
     public String getWriteDay () {
         return writeDay;
-    }
-
-    public void setWriteDay (String writeDay) {
-        this.writeDay = writeDay;
     }
 
     public String getWriteTime () {
         return writeTime;
     }
 
-    public void setWriteTime (String writeTime) {
-        this.writeTime = writeTime;
-    }
 }
