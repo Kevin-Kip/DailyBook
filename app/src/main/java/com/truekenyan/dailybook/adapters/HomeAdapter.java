@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.truekenyan.dailybook.R;
 import com.truekenyan.dailybook.activities.DetailsActivity;
+import com.truekenyan.dailybook.interfaces.OnItemClick;
 import com.truekenyan.dailybook.models.JournalEntry;
 import com.truekenyan.dailybook.utilities.Constants;
 
@@ -27,6 +28,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
     private   List<JournalEntry> entryList = new ArrayList<>();
     private final Context context;
+    private OnItemClick onItemClick;
 
     public HomeAdapter (List<JournalEntry> entryList, Context context) {
         this.entryList = entryList;
@@ -37,17 +39,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
     @Override
     public MyViewHolder onCreateViewHolder (@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.card_list_item, parent, false);
-        final MyViewHolder viewHolder = new MyViewHolder(view);
-        viewHolder.mainParent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick (View view) {
-                Intent intent = new Intent(context, DetailsActivity.class);
-                intent.putExtra(Constants.POSITION, viewHolder.getAdapterPosition());
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
-            }
-        });
-        return viewHolder;
+        return new MyViewHolder(view);
     }
 
     @Override
@@ -71,7 +63,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
         notifyDataSetChanged();
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder {
+    class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         final TextView dateView;
         final TextView monthView;
@@ -92,6 +84,20 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
             timeView = itemView.findViewById(R.id.time_display);
             contentView = itemView.findViewById(R.id.content_display);
             mainParent = itemView.findViewById(R.id.main_parent);
+
+            dateView.setOnClickListener(this);
+            monthView.setOnClickListener(this);
+            dayView.setOnClickListener(this);
+            yearView.setOnClickListener(this);
+            timeView.setOnClickListener(this);
+            contentView.setOnClickListener(this);
+            mainParent.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick (View view) {
+            int position = getAdapterPosition();
+            onItemClick.onItemClick(position);
         }
     }
 }

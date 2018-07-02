@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -15,10 +16,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.truekenyan.dailybook.R;
 import com.truekenyan.dailybook.adapters.HomeAdapter;
 import com.truekenyan.dailybook.database.DailyBookDatabase;
+import com.truekenyan.dailybook.interfaces.OnItemClick;
 import com.truekenyan.dailybook.models.JournalEntry;
+import com.truekenyan.dailybook.utilities.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +35,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 @SuppressWarnings ("WeakerAccess")
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnItemClick {
 
     @BindView (R.id.search_view)
     SearchView searchView;
@@ -42,6 +49,9 @@ public class MainActivity extends AppCompatActivity {
     private DailyBookDatabase database;
     private HomeAdapter adapter;
     private static List<JournalEntry> newList;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser firebaseUser;
+    private String userId;
 
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -50,6 +60,13 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+        if (firebaseUser == null){
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            finish();
+        }
 
         List<JournalEntry> entryList = new ArrayList<>();
         database = DailyBookDatabase.getDatabaseInstance(getApplicationContext());
@@ -84,6 +101,28 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected (MenuItem item) {
         if (item.getItemId() == R.id.settings){
             startActivity(new Intent(getApplicationContext(), ExtrasActivity.class));
+        } else if (item.getItemId() == R.id.log_out){
+            new MaterialDialog.Builder(MainActivity.this)
+                    .title("Confirmation")
+                    .content("Are you sure you want to Sign Out?")
+                    .positiveText("SURE")
+                    .negativeText("No")
+                    .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick (@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick (@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            dialog.dismiss();
+                            firebaseAuth.signOut();
+                            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                            finish();
+                        }
+                    })
+                    .show();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -110,5 +149,13 @@ public class MainActivity extends AppCompatActivity {
 
     public static List<JournalEntry> getList(){
         return newList;
+    }
+
+    @Override
+    public void onItemClick (int position) {
+        Intent intent = new Intent(getApplicationContext(), DetailsActivity.class);
+        intent.putExtra(Constants.POSITION, position);
+        intent.putExtra(Constants.USER_ID, firebaseUser.getUid());
+        startActivity(intent);
     }
 }

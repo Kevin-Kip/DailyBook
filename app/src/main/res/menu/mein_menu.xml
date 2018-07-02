@@ -3,5 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/settings"
         android:title="@string/settings"
-        app:showAsAction="never"/>
+        android:icon="@drawable/ic_settings_black"
+        app:showAsAction="ifRoom"/>
+    <item android:id="@+id/log_out"
+        android:title="@string/sign_out"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_lock_black"/>
 </menu>

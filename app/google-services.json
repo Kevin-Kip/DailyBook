@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "853626093238",
+    "firebase_url": "https://daily-book.firebaseio.com",
+    "project_id": "daily-book",
+    "storage_bucket": "daily-book.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:853626093238:android:e485bf3179e9e3da",
+        "android_client_info": {
+          "package_name": "com.truekenyan.dailybook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "853626093238-skhs2210m5vssldtt3gn2pdbq76f5qqo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.truekenyan.dailybook",
+            "certificate_hash": "f6c0026b330d505fa90da6a239432739572b3af4"
+          }
+        },
+        {
+          "client_id": "853626093238-u08kt1moaj7b3b77dh086dl02g2jp6ds.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCR4jMYBF7oakW0e5LHTS-llcfLdykkZQ4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "853626093238-u08kt1moaj7b3b77dh086dl02g2jp6ds.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

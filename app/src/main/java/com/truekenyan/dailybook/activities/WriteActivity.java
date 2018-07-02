@@ -9,6 +9,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.truekenyan.dailybook.R;
 import com.truekenyan.dailybook.database.DailyBookDatabase;
 import com.truekenyan.dailybook.models.JournalEntry;
@@ -46,6 +50,12 @@ public class WriteActivity extends AppCompatActivity {
     private String yearText;
     private boolean isEdit = false;
     private Intent intent;
+
+    private String uId;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference entries;
+    private FirebaseUser firebaseUser;
+
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,10 +66,13 @@ public class WriteActivity extends AppCompatActivity {
 
         Calendar calendar = Calendar.getInstance();
 
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
         intent = getIntent();
         if (intent != null) {
             if (intent.hasExtra(Constants.POSITION)) {
                 int position = Integer.parseInt(String.valueOf(intent.getIntExtra(Constants.POSITION, 0)));
+                uId = intent.getStringExtra(Constants.USER_ID);
                 JournalEntry journalEntry = MainActivity.getList().get(position);
                 dayText = journalEntry.getWriteDate();
                 dayText = journalEntry.getWriteDay();

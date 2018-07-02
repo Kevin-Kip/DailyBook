@@ -40,6 +40,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     private int position;
     private JournalEntry journalEntry;
+    private String userId;
 
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -55,6 +56,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         position = Integer.parseInt(String.valueOf(intent.getIntExtra(Constants.POSITION, 0)));
+        userId = intent.getStringExtra(Constants.USER_ID);
         journalEntry = entryList.get(position);
 
         dateDisplay.setText(journalEntry.getWriteDate());
@@ -77,6 +79,7 @@ public class DetailsActivity extends AppCompatActivity {
             case R.id.edit:
                 Intent intent = new Intent(getApplicationContext(), WriteActivity.class);
                 intent.putExtra(Constants.POSITION, position);
+                intent.putExtra(Constants.USER_ID, userId);
                 startActivity(intent);
                 break;
             case R.id.delete:

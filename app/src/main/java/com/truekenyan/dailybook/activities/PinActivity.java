@@ -10,6 +10,8 @@ import android.widget.EditText;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.truekenyan.dailybook.R;
 import com.truekenyan.dailybook.utilities.Constants;
 
@@ -31,12 +33,19 @@ public class PinActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pin);
         ButterKnife.bind(this);
 
-        SharedPreferences sharedPreferences = getSharedPreferences(Constants.PIN_COLUMN, MODE_PRIVATE);
-        if (sharedPreferences.contains(Constants.PIN_COLUMN)){
-            savedPin = sharedPreferences.getInt(Constants.PIN_COLUMN, 0);
-        } else {
-            startActivity(new Intent(getApplicationContext(), NewPinActivity.class));
+
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser == null){
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
             finish();
+        } else {
+            SharedPreferences sharedPreferences = getSharedPreferences(Constants.PIN_COLUMN, MODE_PRIVATE);
+            if (sharedPreferences.contains(Constants.PIN_COLUMN)){
+                savedPin = sharedPreferences.getInt(Constants.PIN_COLUMN, 0);
+            } else {
+                startActivity(new Intent(getApplicationContext(), NewPinActivity.class));
+                finish();
+            }
         }
     }
 
