@@ -7,7 +7,7 @@ android:
     # - platform-tools
 
     # The BuildTools version used by your project
-    - build-tools-27.1.1
+    - build-tools-26.1.1
 
     # The SDK version used to compile your project
     - android-27
@@ -16,7 +16,7 @@ android:
     - extra-google-google_play_services
     - extra-google-m2repository
     - extra-android-m2repository
-    - addon-google_apis-google-27
+    - addon-google_apis-google-26
 
-    script:
+    before_install:
     - chmod +x ./gradlew
